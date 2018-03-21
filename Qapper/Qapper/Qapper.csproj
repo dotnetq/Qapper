@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Authors>dev@macrobert.com</Authors>
+    <Company>MacRobert.com</Company>
+    <Description>Qapper (pronounced 'kwapper') is a super simple object mapper for kdb+\q modelled after Dapper</Description>
+    <Copyright>macrobert.com © 2018</Copyright>
+    <PackageLicenseUrl>https://github.com/machonky/Qapper/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/machonky/Qapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/machonky/Qapper.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>kdb+\q ORM C#</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="qsharp.netstandard" Version="2.3.0" />
+    <PackageReference Include="Qtools" Version="1.0.4" />
+    <PackageReference Include="QTools.Schema" Version="1.0.4" />
+  </ItemGroup>
+
+</Project>
