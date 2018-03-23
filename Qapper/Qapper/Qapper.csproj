@@ -13,12 +13,12 @@
     <RepositoryUrl>https://github.com/machonky/Qapper.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>kdb+\q ORM C#</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="qsharp.netstandard" Version="2.3.0" />
-    <PackageReference Include="Qtools" Version="1.0.4" />
-    <PackageReference Include="QTools.Schema" Version="1.0.4" />
+    <PackageReference Include="qsharp.netstandard" Version="2.3.1" />
+    <PackageReference Include="QTools" Version="1.0.5" />
   </ItemGroup>
 
 </Project>
