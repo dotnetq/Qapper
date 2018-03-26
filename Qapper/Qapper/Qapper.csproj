@@ -13,7 +13,7 @@
     <RepositoryUrl>https://github.com/machonky/Qapper.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>kdb+\q ORM C#</PackageTags>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
   <ItemGroup>

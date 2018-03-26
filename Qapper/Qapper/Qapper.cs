@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Qapper
 {
-    public static class Qapper
+    public static class QMapper
     {
         public static IEnumerable<T> QueryObjects<T>(this QConnection connection, string query)
         {
