@@ -38,7 +38,9 @@ namespace Qapper
         }
 
         private static readonly Func<Type, Dictionary<string, PropertyInfo>> MappingFactory =
-            t => t.GetProperties(BindingFlags.Instance | BindingFlags.Public).ToDictionary(p => LeadingLowercase(p.Name));
+            t => t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                .Where(p => !p.HasAttribute<IgnoreAttribute>())
+                .ToDictionary(p => LeadingLowercase(p.Name));
 
         private static string LeadingLowercase(string value) => string.Concat(value[0].ToString().ToLower(), value.Substring(1));
 
