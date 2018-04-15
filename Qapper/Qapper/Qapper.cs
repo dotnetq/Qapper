@@ -145,11 +145,13 @@ namespace Qapper
 
         private static Type ToQType(Type propertyType)
         {
+            // TODO: Extend the implementation to incorporate types from QSharp
             return propertyType;
         }
 
         private static object ToQObject(object dataModelValue, PropertyInfo propInfo)
         {
+            // TODO: Extend the implementation to incorporate types from QSharp
             return dataModelValue;
         }
     }
