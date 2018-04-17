@@ -40,9 +40,19 @@ namespace Qapper
         private static readonly Func<Type, Dictionary<string, PropertyInfo>> MappingFactory =
             t => t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
                 .Where(p => !p.HasAttribute<IgnoreAttribute>())
-                .ToDictionary(p => LeadingLowercase(p.Name));
+                .ToDictionary(p => ColumnName(p));
 
         private static string LeadingLowercase(string value) => string.Concat(value[0].ToString().ToLower(), value.Substring(1));
+
+        private static string ColumnName(MemberInfo info)
+        {
+            var overrideColName = info.GetCustomAttribute<ColNameAttribute>();
+            if (overrideColName != null)
+            {
+                return overrideColName.Name;
+            }
+            return LeadingLowercase(info.Name);
+        }
 
         private static readonly PropertyMap MappedTypes = new PropertyMap(MappingFactory);
 

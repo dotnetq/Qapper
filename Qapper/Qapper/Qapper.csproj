@@ -13,13 +13,13 @@
     <RepositoryUrl>https://github.com/machonky/Qapper.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>kdb+\q ORM C#</PackageTags>
-    <Version>1.0.3</Version>
-    <PackageReleaseNotes>Ignored Properties support</PackageReleaseNotes>
+    <Version>1.0.4</Version>
+    <PackageReleaseNotes>Accomodate column name overrides</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="qsharp.netstandard" Version="2.3.1" />
-    <PackageReference Include="QTools" Version="1.0.5" />
+    <PackageReference Include="QTools" Version="1.0.7" />
   </ItemGroup>
 
 </Project>
