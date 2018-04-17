@@ -4,7 +4,7 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Authors>dev@macrobert.com</Authors>
+    <Authors>Martin MacRobert - dev@macrobert.com</Authors>
     <Company>MacRobert.com</Company>
     <Description>Qapper (pronounced 'kwapper') is a super simple object mapper for kdb+\q modelled after Dapper</Description>
     <Copyright>macrobert.com © 2018</Copyright>
