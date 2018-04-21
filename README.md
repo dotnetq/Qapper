@@ -51,3 +51,5 @@ IEnumerable<Auth.User> users = connection.QueryObjects<Auth.User>("select from .
 ```
 
 It really is that simple!
+
+Take a look at the worked [Example](https://github.com/dotnetq/Example) for more detail.
