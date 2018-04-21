@@ -43,3 +43,11 @@ namespace Auth
 ```
 
 Where the ```connection``` instance above is an active ```QConnection``` to a kdb+ database.
+
+We can retrieve a collection of ```User``` objects from the database with a single line instruction:
+
+```cs
+IEnumerable<Auth.User> users = connection.QueryObjects<Auth.User>("select from .auth.user");
+```
+
+It really is that simple!
