@@ -1,11 +1,11 @@
 ﻿using qSharp;
-using QTools.Schema;
+using DotnetQ.QSchema.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Qapper
+namespace DotnetQ.Qapper
 {
     public static class QMapper
     {
