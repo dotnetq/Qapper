@@ -4,22 +4,23 @@
     <TargetFrameworks>netstandard2.0;net461</TargetFrameworks>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Authors>Martin MacRobert - dev@macrobert.com</Authors>
+    <Authors>Martin MacRobert (dev@macrobert.com)</Authors>
     <Company>MacRobert.com</Company>
     <Description>Qapper (pronounced 'kwapper') is a super simple object mapper for kdb+\q modelled after Dapper</Description>
     <Copyright>macrobert.com © 2018</Copyright>
-    <PackageLicenseUrl>https://github.com/machonky/Qapper/blob/master/LICENSE</PackageLicenseUrl>
-    <PackageProjectUrl>https://github.com/machonky/Qapper</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/machonky/Qapper.git</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/dotnetq/Qapper/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/dotnetq/Qapper</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/dotnetq/Qapper.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>kdb+\q ORM C#</PackageTags>
-    <Version>1.0.4</Version>
-    <PackageReleaseNotes>Accomodate column name overrides</PackageReleaseNotes>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>Move to DotnetQ organization</PackageReleaseNotes>
+    <RootNamespace>DotnetQ.Qapper</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="QSchema.Attributes" Version="1.0.8" />
     <PackageReference Include="qsharp.netstandard" Version="2.3.1" />
-    <PackageReference Include="QTools" Version="1.0.7" />
   </ItemGroup>
 
 </Project>

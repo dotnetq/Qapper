@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 
-namespace Qapper
+namespace DotnetQ.Qapper
 {
     internal class ConcurrentObjectFactoryCache<KeyT, ValueT>
     {
