@@ -10,3 +10,36 @@ Qapper (pronounced 'kwapper') is a super simple object mapper for kdb+\q modelle
 
 > ### DISCLAIMER
 > **IMPORTANT:** The current state of this toolkit is **PRE-ALPHA/Development**. Please consider it version a foundational version. Many areas could be improved and change significantly while refactoring current code and implementing new features. 
+
+## Example
+
+Given a plain C# class decorated with [QSchema](https://github.com/dotnetq/QSchema) attributes... 
+
+```cs
+namespace Auth
+{
+    public class User
+    {
+        [Key]
+        public string Id { get; set; }
+        [Unique]
+        public string Login { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+
+        // We'll store the various roles when we deserialize
+        [Ignore] public string[] PrincipalIds { get; set; }
+    }
+}    
+```
+
+... and an active corresponding kdb+ database built with ```QSchema.SchemaBuilder```, we can create an instance of the ```User``` class ```userInstance``` and store it in the database with:
+
+```cs
+    var entities = new Auth.User[]{userInstance};
+    var qTable = QMapper.ConvertToQTable(entities);
+    var tableName = SchemaBuilder.GetQTableName(typeof(Auth.User));
+    connection.Sync("upsert", tableName, qTable);
+```
+
+Where the ```connection``` instance above is an active ```QConnection``` to a kdb+ database.
