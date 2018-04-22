@@ -6,10 +6,16 @@
 [![GitHub forks](https://img.shields.io/github/forks/machonky/Qapper.svg?style=social&label=Fork)](https://github.com/machonky/Qapper/network)
 [![GitHub stars](https://img.shields.io/github/stars/machonky/Qapper.svg?style=social&label=Star)](https://github.com/machonky/Qapper/stargazers)
 
-Qapper (pronounced 'kwapper') is a super simple object mapper for kdb+\q modelled after [Dapper](https://github.com/StackExchange/Dapper)
+Qapper (pronounced 'kwapper') is a super simple object mapper for kdb+/q modelled after [Dapper](https://github.com/StackExchange/Dapper)
 
 > ### DISCLAIMER
 > **IMPORTANT:** The current state of this toolkit is **PRE-ALPHA/Development**. Please consider it version a foundational version. Many areas could be improved and change significantly while refactoring current code and implementing new features. 
+
+## Introduction
+Qapper assists a .net developer to easily push data into and retrieve data from a kdb database. Qapper automatically maps between object instances and table rows so that client side programming involves working with simple C# object instances further simplifying the interaction.
+
+## Getting Started
+Install the [NuGet package](https://www.nuget.org/packages/Qapper).
 
 ## Example
 
