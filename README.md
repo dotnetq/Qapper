@@ -1,4 +1,4 @@
-# Qapper
+# Qapper - .net Data Mapping tools for Q
 [![GitHub license](https://img.shields.io/badge/license-LGPL%20v3-blue.svg)](https://github.com/machonky/qapper/blob/master/LICENSE)
 [![Nuget](https://img.shields.io/nuget/v/Qapper.svg)](https://www.nuget.org/packages/qapper)
 [![NuGet](https://img.shields.io/nuget/dt/Qapper.svg)](https://www.nuget.org/packages/qapper)
