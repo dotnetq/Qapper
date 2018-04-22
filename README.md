@@ -50,8 +50,10 @@ We can retrieve a collection of ```User``` objects from the database with a sing
 IEnumerable<Auth.User> users = connection.QueryObjects<Auth.User>("select from .auth.user");
 ```
 
-Qapper will automatically convert the returned 'q' table into an enumerable collection of object instances. The object properties of each object instance have been mapped to the columns of the table, subject to a simple naming convention, so each object instance will correspond to a row from the table. This will work with both keyed and unkeyed tables.
+Qapper will automatically convert the returned 'q' table into an enumerable collection of object instances. The object properties of each object instance have been mapped to the columns of the table, using the [QSchema](https://github.com/dotnetq/Example) naming convention, so each object instance will correspond to a row from the table. This will work with both keyed and unkeyed tables.
 
 It really is that simple!
 
 Take a look at the worked [Example](https://github.com/dotnetq/Example) for more detail.
+
+Future work will permit arbitrary mapping to pre-existing tables.
