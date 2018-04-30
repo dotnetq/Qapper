@@ -1,9 +1,10 @@
 ﻿using qSharp;
 using DotnetQ.QSchema.Attributes;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Collections.Generic;
+using FastMember;
 
 namespace DotnetQ.Qapper
 {
@@ -16,31 +17,41 @@ namespace DotnetQ.Qapper
 
         public static T[] FromQTable<T>(object o)
         {
-            var properties = MappedTypes[typeof(T)];
+            var cxt = MappedTypes[typeof(T)];
 
             if (o is QTable table)
             {
-                return FromQTable<T>(properties, table);
+                return FromQTable<T>(cxt, table);
             }
 
             if (o is QKeyedTable keyedTable)
             {
-                return FromQKeyedTable<T>(properties, keyedTable);
+                return FromQKeyedTable<T>(cxt, keyedTable);
             }
 
             return null;
         }
 
-        private class PropertyMap : ConcurrentObjectFactoryCache<Type, Dictionary<string, PropertyInfo>>
+        private class MappingContext
         {
-            public PropertyMap(Func<Type, Dictionary<string, PropertyInfo>> mappingFactory) : base(mappingFactory)
+            public TypeAccessor TypeAccessor { get; set; }
+            public Dictionary<string, PropertyInfo> ColumnsToProperties { get; set; }
+        }
+
+        private class PropertyMap : ConcurrentObjectFactoryCache<Type, MappingContext>
+        {
+            public PropertyMap(Func<Type, MappingContext> mappingFactory) : base(mappingFactory)
             { }
         }
 
-        private static readonly Func<Type, Dictionary<string, PropertyInfo>> MappingFactory =
-            t => t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
-                .Where(p => !p.HasAttribute<IgnoreAttribute>())
-                .ToDictionary(p => ColumnName(p));
+        private static readonly Func<Type, MappingContext> MappingFactory =
+            t => new MappingContext
+            {
+                TypeAccessor = TypeAccessor.Create(t),
+                ColumnsToProperties = t.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                        .Where(p => !p.HasAttribute<IgnoreAttribute>())
+                        .ToDictionary(p => ColumnName(p))
+            };
 
         private static string LeadingLowercase(string value) => string.Concat(value[0].ToString().ToLower(), value.Substring(1));
 
@@ -56,36 +67,37 @@ namespace DotnetQ.Qapper
 
         private static readonly PropertyMap MappedTypes = new PropertyMap(MappingFactory);
 
-        private static T[] FromQKeyedTable<T>(Dictionary<string, PropertyInfo> properties, QKeyedTable keyedTable)
+        private static T[] FromQKeyedTable<T>(MappingContext cxt, QKeyedTable keyedTable)
         {
             var result = new T[keyedTable.RowsCount];
             for (int row = 0; row < result.Length; ++row)
             {
                 result[row] = Activator.CreateInstance<T>();
-                AssignToPropertyFromQColumn(properties, keyedTable.Keys, result, row);
-                AssignToPropertyFromQColumn(properties, keyedTable.Values, result, row);
+                AssignToPropertyFromQColumn(cxt, keyedTable.Keys, result, row);
+                AssignToPropertyFromQColumn(cxt, keyedTable.Values, result, row);
             }
             return result;
         }
 
-        private static T[] FromQTable<T>(Dictionary<string, PropertyInfo> properties, QTable table)
+        private static T[] FromQTable<T>(MappingContext cxt, QTable table)
         {
             var result = new T[table.RowsCount];
             for (int row = 0; row < result.Length; ++row)
             {
                 result[row] = Activator.CreateInstance<T>();
-                AssignToPropertyFromQColumn(properties, table, result, row);
+                AssignToPropertyFromQColumn(cxt, table, result, row);
             }
 
             return result;
         }
 
-        private static void AssignToPropertyFromQColumn<T>(Dictionary<string, PropertyInfo> properties, QTable table, T[] result, int row)
+        private static void AssignToPropertyFromQColumn<T>(MappingContext cxt, QTable table, T[] result, int row)
         {
             for (int col = 0; col < table.Data.Length; ++col)
             {
                 Array x = (Array)table.Data.GetValue(col);
-                properties[table.Columns[col]].SetValue(result[row], x.GetValue(row));
+                var propName = cxt.ColumnsToProperties[table.Columns[col]];
+                cxt.TypeAccessor[result[row], propName.Name] = x.GetValue(row);
             }
         }
 
@@ -96,12 +108,12 @@ namespace DotnetQ.Qapper
 
         public static IQTable ConvertToQTable<T>(IEnumerable<T> dataModels)
         {
-            var propertiesDict = MappedTypes[typeof(T)];
+            var cxt = MappedTypes[typeof(T)];
 
             var keyedProperties = new Dictionary<string, PropertyInfo>();
             var unkeyedProperties = new Dictionary<string, PropertyInfo>();
 
-            foreach (var prop in propertiesDict)
+            foreach (var prop in cxt.ColumnsToProperties)
             {
                 if (prop.Value.HasAttribute<KeyAttribute>())
                 {
@@ -113,8 +125,8 @@ namespace DotnetQ.Qapper
                 }
             }
 
-            var keyedTable = keyedProperties.Count == 0 ? null : ConvertToQTable(dataModels, keyedProperties);
-            var unkeyedTable = ConvertToQTable(dataModels, unkeyedProperties);
+            var keyedTable = keyedProperties.Count == 0 ? null : ConvertToQTable(dataModels, keyedProperties, cxt);
+            var unkeyedTable = ConvertToQTable(dataModels, unkeyedProperties, cxt);
 
             if (keyedTable != null)
             {
@@ -124,7 +136,7 @@ namespace DotnetQ.Qapper
             return unkeyedTable;
         }
 
-        private static QTable ConvertToQTable<T>(IEnumerable<T> dataModels, Dictionary<string, PropertyInfo> propertiesDict)
+        private static QTable ConvertToQTable<T>(IEnumerable<T> dataModels, Dictionary<string, PropertyInfo> propertiesDict, MappingContext cxt)
         {
             var rowCount = dataModels.Count();
 
@@ -144,7 +156,7 @@ namespace DotnetQ.Qapper
                 for (int propIndex = 0; propIndex < propertiesArray.Length; propIndex++)
                 {
                     var propInfo = propertiesArray[propIndex];
-                    var dataModelValue = propInfo.GetValue(dataModel);
+                    var dataModelValue = cxt.TypeAccessor[dataModel, propInfo.Name];
                     ((Array)data.GetValue(propIndex)).SetValue(ToQObject(dataModelValue, propInfo), rowIndex);
                 }
 
